@@ -1,29 +1,34 @@
 class Solution:
     def getRow(self, rowIndex: int) -> List[int]:
-        tri = []
-        numRows = rowIndex + 1 #this code essentially builds off the code from Pascal's triangle 1
+        if rowIndex == 0:
+            return [1]
+        elif rowIndex == 1:
+            return [1,1]
+        elif rowIndex == 2:
+            return [1,2,1]
+        else:
+            mother_row = [1,2,1]
+            next_row = []
+            for j in range(len(mother_row)+1): #create the next row
+                next_row.append(0)
+            next_row[0] = 1
+            next_row[-1] = 1
+            
+            
+            for x in range(rowIndex-2):
+                
+                for k in range(1,len(mother_row)):
+                    next_row[k] = mother_row[k-1] + mother_row[k]
 
-        #initializing empty Pascal's triangle
-        for i in range(numRows):
-            tri.append([]) 
-            for x in range(i+1):
-                tri[i].append(0)
-
-     # we have [[0], [0, 0], [0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0, 0]] at this stage
-
-    
-    #setting the digit of the first row and second row to 1
-        if numRows >= 1:
-            tri[0][0]= 1
+                
+                if len(next_row) != rowIndex + 1:
+                    mother_row = next_row #set the mother row to what next row is
+                    next_row = [] #reset next_row to the [1, 0, 0, ....., 0,1] format 
+                    for l in range(len(mother_row)+1): #
+                        next_row.append(0)
+                    next_row[0] = 1
+                    next_row[-1] = 1   
         
     
-    #setting the first and last digits in every row to 1 starting from row 3
-        for j in range(1,numRows): 
-            tri[j][0] = 1
-            tri[j][-1] = 1
-    # we have [[1], [1, 1], [1, 0, 1], [1, 0, 0, 1], [1, 0, 0, 0, 1]] at this stage
-            for k in range(1,j):
-                tri[j][k] = tri[j-1][k-1] + tri[j-1][k]
-
-        return tri[rowIndex]
+        return next_row
     
